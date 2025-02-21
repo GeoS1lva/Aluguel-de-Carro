@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Test.Context;
-using Test.Repositories;
-using Test.Services;
+using Fonte.Context;
+using Fonte.Repositories;
+using Fonte.Services;
+using Microsoft.IdentityModel.Tokens;
+using Fonte.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,13 +11,8 @@ builder.Services.AddScoped<SqlServerDbContext>();
 builder.Services.AddDbContext<SqlServerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSql")));
 
-builder.Services.AddScoped<ICarroRepository, CarroRepository>();
-builder.Services.AddScoped<IAluguelRepository, AluguelRepository>();
-
 builder.Services.AddScoped<IAluguelService, AluguelService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-
 
 // Add services to the container.
 
@@ -37,8 +34,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 var scope = app.Services.CreateScope();
-var carroRepository = scope.ServiceProvider.GetRequiredService<ICarroRepository>();
 
-await carroRepository.InicializarDadosAsync();
+var context = scope.ServiceProvider.GetRequiredService<SqlServerDbContext>();
+
+if (!context.Carros.Any())
+{
+    var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+    await unitOfWork.CarroRepository.InicializarDadosAsync();
+}
 
 app.Run();

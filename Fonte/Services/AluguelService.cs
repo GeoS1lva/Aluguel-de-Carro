@@ -1,13 +1,15 @@
 ﻿
 using System.Net.Mail;
 using System.Reflection.Metadata.Ecma335;
-using Test.Context;
-using Test.Entities;
-using Test.Enums;
-using Test.Models;
-using Test.Repositories;
+using System.Runtime.InteropServices;
+using Fonte.Context;
+using Fonte.Entities;
+using Fonte.Enums;
+using Fonte.Models;
+using Fonte.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Test.Services
+namespace Fonte.Services
 {
     public class AluguelService(IUnitOfWork context) : IAluguelService
     {
@@ -16,24 +18,25 @@ namespace Test.Services
             EMAIL_INVALIDO = "Email Inválido.",
             NOME_COMPLETO_INVALIDO = "É necessário informar no mínimo nome e sobrenome.",
             CARRO_NAO_DISPONIVEL = "Não temos carros disponíveis",
-            DOMINGO_INVALIDO = "Não é possível alugar somente ao domingo e/ou somente 1 dia",
-            DATA_INVALIDA = "Data Invalida";
+            DOMINGO_UM_DIA_INVALIDO = "Não é possível alugar somente ao domingo e/ou somente 1 dia",
+            DATA_INVALIDA = "Data Invalida",
+            CLIENTE_JA_POSSUI_CARRO_ALUGADO = "Operação Inválida! Cliente já possui um carro alugado";
 
         private string erro = string.Empty;
 
         public async Task<ResultModel> AlugarCarroCliente(SolicitacaoAluguelCarroModel model)
         {
+            if (!ValidarCpf(model.CpfCliente))
+                return new(CPF_INVALIDO);
+
             if (!ValidarEmail(model.EmailCliente)
                 || !ValidarNome(model.NomeCliente))
                 return new(erro);
-
-            if (!ValidarCpf(model.CpfCliente))
-                return new(CPF_INVALIDO);
                
             if (!ValidarData(model.DataRetirada, model.DataDevolucao))
                 return new(erro);
 
-            var carros = await context.CarroRepository.ObterCarrosPorTipoAsync((TipoCarro)model.TipoCarro);
+            var carros = await context.CarroRepository.ObterCarrosPorTipoAsync(model.TipoCarro);
             var carro = carros.FirstOrDefault();
 
             if (carro is null || carro.QuantidadeDisponivel <= 0)
@@ -45,30 +48,43 @@ namespace Test.Services
 
             var quantidadeDias = CalcularQuantidadeDias(model.DataRetirada, model.DataDevolucao);
 
-            if (quantidadeDias == 0)
-                return new(DOMINGO_INVALIDO);
-
             var valorTotal = carro.ValorAluguelDia * quantidadeDias;
 
-            var aluguel = new Aluguel(model.CpfCliente, model.NomeCliente, model.EmailCliente, model.CepCliente, quantidadeDias, valorTotal, carro.Modelo, carro.Marca, carro.Ano, (TipoCarro)model.TipoCarro);
+            var cliente = await VerificarECadastrarNovoCliente(model);
+
+            if (await ValidarUmCpfPorCarro(cliente.ClienteId) == false)
+                return new(CLIENTE_JA_POSSUI_CARRO_ALUGADO);
+
+            var aluguel = new Aluguel(quantidadeDias, valorTotal, carro.Modelo, carro.Marca, carro.Ano, model.TipoCarro, cliente.ClienteId);
 
             context.AluguelRepository.InserirAluguel(aluguel);
 
             await context.SaveChangesAsync();
 
-            var aluguelModel = new AluguelModel(model.CpfCliente, model.NomeCliente, model.EmailCliente, model.CepCliente, quantidadeDias, valorTotal, carro.Modelo, carro.Marca, carro.Ano, (TipoCarro)model.TipoCarro);
+            var aluguelModel = new AluguelModel(model.CpfCliente, model.NomeCliente, model.EmailCliente, model.CepCliente, quantidadeDias, valorTotal, carro.Modelo, carro.Marca, carro.Ano, model.TipoCarro);
 
             return new(aluguelModel);
         }
 
-        private int CalcularQuantidadeDias(DateOnly dataInicial, DateOnly dataFinal)
+        private async Task<Cliente> VerificarECadastrarNovoCliente(SolicitacaoAluguelCarroModel model)
+        {
+            var clientes = await context.ClienteRepository.BuscarClientePorCpf(model.CpfCliente);
+
+            if (clientes is null)
+            {
+                var novoCliente = new Cliente(model.NomeCliente, model.CpfCliente, model.EmailCliente, model.CepCliente);
+                context.ClienteRepository.InserirCliente(novoCliente);
+                await context.SaveChangesAsync();
+                return novoCliente;
+            }
+
+            var cliente = clientes;
+            return cliente;
+        }
+
+        private static int CalcularQuantidadeDias(DateOnly dataInicial, DateOnly dataFinal)
         {
             var intervaloData = dataFinal.DayNumber - dataInicial.DayNumber;
-
-            if (intervaloData == 1 && dataInicial.DayOfWeek == DayOfWeek.Sunday)
-                return 0;
-
-            var total = intervaloData;
 
             for(DateOnly data = dataInicial; data < dataFinal; data = data.AddDays(1))
             {
@@ -140,13 +156,28 @@ namespace Test.Services
             return cpf[9] == primeiroDigitoVerificador.ToString()[0] && cpf[10] == segundoDigitoVerificador.ToString()[0];
         }
 
+        private async Task<bool> ValidarUmCpfPorCarro(int Id)
+        {
+            var aluguel = await context.AluguelRepository.ObterAluguelIdCliente(Id);
+
+            return aluguel is null;
+        }
+
         private bool ValidarData(DateOnly retirada, DateOnly devolucao)
         {
-            if(retirada > devolucao)
+            if (retirada > devolucao)
             {
                 erro = DATA_INVALIDA;
                 return false;
             }
+                
+           
+            if (retirada == devolucao)
+            {
+                erro = DOMINGO_UM_DIA_INVALIDO;
+                return false;
+            }
+                
 
             return true;
         }

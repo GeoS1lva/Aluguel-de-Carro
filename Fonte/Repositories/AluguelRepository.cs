@@ -1,8 +1,10 @@
-﻿ using Microsoft.EntityFrameworkCore;
-using Test.Context;
-using Test.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Fonte.Context;
+using Fonte.Entities;
+using Fonte.Repositories;
+using System.Reflection.Metadata.Ecma335;
 
-namespace Test.Repositories;
+namespace Fonte.Repositories;
 
 public class AluguelRepository(SqlServerDbContext context) : IAluguelRepository
 {
@@ -12,4 +14,6 @@ public class AluguelRepository(SqlServerDbContext context) : IAluguelRepository
     {
         _context.Alugueis.Add(aluguel);
     }
+    public async Task<Aluguel?> ObterAluguelIdCliente(int id)
+        => await _context.Alugueis.FirstOrDefaultAsync(x => x.ClienteId == id);
 }

@@ -1,8 +1,9 @@
-﻿using Test.Entities;
+﻿using Fonte.Entities;
 
-namespace Test.Repositories;
+namespace Fonte.Repositories;
 
 public interface IAluguelRepository
 {
     void InserirAluguel(Aluguel aluguel);
+    Task<Aluguel?> ObterAluguelIdCliente(int id);
 }

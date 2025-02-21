@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Test.Models;
-using Test.Services;
+using Fonte.Models;
+using Fonte.Services;
 
-namespace Test.Controllers;
+namespace Fonte.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

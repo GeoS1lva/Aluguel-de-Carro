@@ -1,6 +1,6 @@
-﻿using Test.Enums;
+﻿using Fonte.Enums;
 
-namespace Test.Entities;
+namespace Fonte.Entities;
 public class Carro(string modelo, string marca, int ano, TipoCarro tipo, int quantidadeDisponivel, double valorAluguelDia) : Entidade
 {
     public string Modelo { get; private set; } = modelo;

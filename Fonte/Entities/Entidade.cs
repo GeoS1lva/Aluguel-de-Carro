@@ -1,4 +1,4 @@
-﻿namespace Test.Entities
+﻿namespace Fonte.Entities
 {
     public abstract class Entidade
     {

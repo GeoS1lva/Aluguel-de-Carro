@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Test.Context;
-using Test.Entities;
-using Test.Enums;
+using Fonte.Context;
+using Fonte.Entities;
+using Fonte.Enums;
 using System.Linq;
 
-namespace Test.Repositories;
+namespace Fonte.Repositories;
 
 public class CarroRepository(SqlServerDbContext context) : ICarroRepository
 {

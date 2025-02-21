@@ -1,6 +1,6 @@
-﻿using Test.Enums;
+﻿using Fonte.Enums;
 
-namespace Test.Models;
+namespace Fonte.Models;
 
 public class SolicitacaoAluguelCarroModel
 {
@@ -10,5 +10,5 @@ public class SolicitacaoAluguelCarroModel
     public required string CepCliente { get; set; }
     public DateOnly DataRetirada { get; set; }
     public DateOnly DataDevolucao { get; set; }
-    public int TipoCarro { get; set; }
+    public TipoCarro TipoCarro { get; set; }
 }

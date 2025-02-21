@@ -1,8 +1,8 @@
 ﻿
-using Test.Entities;
-using Test.Enums;
+using Fonte.Entities;
+using Fonte.Enums;
 
-namespace Test.Repositories;
+namespace Fonte.Repositories;
 
 public interface ICarroRepository
 {

@@ -1,6 +1,6 @@
-﻿using Test.Models;
+﻿using Fonte.Models;
 
-namespace Test.Services
+namespace Fonte.Services
 {
     public interface IAluguelService
     {

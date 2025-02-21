@@ -1,6 +1,6 @@
-﻿using Test.Enums;
+﻿using Fonte.Enums;
 
-namespace Test.Models
+namespace Fonte.Models
 {
     public class AluguelModel(string cpfCliente, string nomeCliente, string emailCliente, string cepCliente, int quantidadeDias, double valorTotal, string modeloCarro, string marcaCarro, int anoCarro, TipoCarro tipoCarro)
     {
@@ -14,7 +14,6 @@ namespace Test.Models
         public string MarcaCarro { get; private set; } = marcaCarro;
         public int AnoCarro { get; private set; } = anoCarro;
         public TipoCarro TipoCarro { get; private set; } = tipoCarro;
-
 
     }
 }
