@@ -6,7 +6,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Fonte.Repositories;
 
-public class AluguelRepository(SqlServerDbContext context) : IAluguelRepository
+public sealed class AluguelRepository(SqlServerDbContext context) : IAluguelRepository
 {
     private readonly SqlServerDbContext _context = context;
 

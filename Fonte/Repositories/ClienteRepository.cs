@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fonte.Repositories
 {
-    public class ClienteRepository(SqlServerDbContext context) : IClienteRepository
+    public sealed class ClienteRepository(SqlServerDbContext context) : IClienteRepository
     {
         private readonly SqlServerDbContext _context = context;
 

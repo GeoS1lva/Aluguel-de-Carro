@@ -78,6 +78,10 @@ namespace Fonte.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PlacaCarro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("QuantidadeDisponivel")
                         .HasColumnType("int");
 
