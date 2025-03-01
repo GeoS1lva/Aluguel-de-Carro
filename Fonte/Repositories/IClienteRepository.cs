@@ -7,5 +7,6 @@ namespace Fonte.Repositories
     {
         public void InserirCliente(Cliente cliente);
         public Task<Cliente?> BuscarClientePorCpf(string cpf);
+        public Task<Cliente?> BuscarClientePorEmail(string email);
     }
 }

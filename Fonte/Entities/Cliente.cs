@@ -1,11 +1,11 @@
 ﻿ namespace Fonte.Entities
 {
-    public class Cliente(string nomeCliente, string cpfCliente, string emailCliente, string cepCliente)
+    public sealed class Cliente(string nome, string cpf, string email, string cep) : Entidade
     {
-        public int ClienteId { get; set; }
-        public string NomeCliente { get; set; } = nomeCliente;
-        public string CpfCliente { get; set; } = cpfCliente;
-        public string EmailCliente { get; set; } = emailCliente;
-        public string CepCliente { get; set; } = cepCliente;
+        public string Nome { get; set; } = nome;
+        public string Cpf { get; set; } = cpf;
+        public string Email { get; set; } = email;
+        public string Cep { get; set; } = cep;
+        public ICollection<Aluguel> Alugueis { get; set; }
     }
 }

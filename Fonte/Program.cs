@@ -12,6 +12,7 @@ builder.Services.AddDbContext<SqlServerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSql")));
 
 builder.Services.AddScoped<IAluguelService, AluguelService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add services to the container.

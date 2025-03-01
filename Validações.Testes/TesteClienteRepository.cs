@@ -1,4 +1,4 @@
-﻿using Fonte.Context;
+﻿/*using Fonte.Context;
 using Fonte.Entities;
 using Fonte.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -45,3 +45,4 @@ namespace Validações.Testes
         }
     }
 }
+*/

@@ -12,7 +12,11 @@ namespace Fonte.Repositories
         {
             _context.Clientes.Add(cliente);
         }
+
         public async Task<Cliente?> BuscarClientePorCpf(string cpf)
-            => await _context.Clientes.FirstOrDefaultAsync(x => x.CpfCliente == cpf);
+            => await _context.Clientes.FirstOrDefaultAsync(x => x.Cpf == cpf);
+
+        public async Task<Cliente?> BuscarClientePorEmail(string email)
+            => await _context.Clientes.FirstOrDefaultAsync(x => x.Email == email);
     }
 }
