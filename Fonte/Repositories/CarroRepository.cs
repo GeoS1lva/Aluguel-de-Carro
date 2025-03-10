@@ -13,6 +13,9 @@ public sealed class CarroRepository(SqlServerDbContext context) : ICarroReposito
     public async Task<List<Carro>> ObterCarrosPorTipoAsync(TipoCarro tipo)
         => await _context.Carros.Where(x => x.Tipo == tipo && x.Disponivel == true).OrderBy(x => x.ValorAluguelDia).ToListAsync();
 
+    public async Task<Carro> ObterCarroPelaPlaca(string placa)
+        => await _context.Carros.FirstOrDefaultAsync(x => x.PlacaCarro == placa);
+
     public void Atualizar(Carro carro)
         => _context.Carros.Update(carro);
 

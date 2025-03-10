@@ -13,6 +13,9 @@ builder.Services.AddDbContext<SqlServerDbContext>(options =>
 
 builder.Services.AddScoped<IAluguelService, AluguelService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IDevolverAluguelService, DevolverAluguelService>();
+builder.Services.AddScoped<IAlugueisVencidosService, AlugueisVencidosService>();
+builder.Services.AddScoped<ITarefaAutomaticaService, TarefaAutomaticaService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add services to the container.

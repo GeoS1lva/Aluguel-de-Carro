@@ -20,6 +20,10 @@ namespace Fonte.Context
                 .HasOne(x => x.Carro)
                 .WithMany(l => l.Alugueis)
                 .HasForeignKey(e => e.CarroId);
+
+            modelBuilder.Entity<Aluguel>()
+            .Property(a => a.status)
+            .HasConversion<string>();
         }
     }
 }

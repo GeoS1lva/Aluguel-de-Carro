@@ -1,5 +1,4 @@
-﻿
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using Fonte.Context;

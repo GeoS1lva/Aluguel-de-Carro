@@ -58,18 +58,14 @@ namespace Fonte.Services
 
         private static bool ValidarCpf(string cpf)
         {
-            // Remove qualquer caractere não numérico
             cpf = new string(cpf.Where(char.IsDigit).ToArray());
 
-            // Verifica se o CPF tem 11 caracteres
             if (cpf.Length != 11)
                 return false;
 
-            // Verifica se todos os números são iguais (casos como 111.111.111-11)
             if (cpf.All(c => c == cpf[0]))
                 return false;
 
-            // Valida o primeiro dígito verificador
             int soma = 0;
             for (int i = 0; i < 9; i++)
                 soma += int.Parse(cpf[i].ToString()) * (10 - i);
@@ -78,7 +74,6 @@ namespace Fonte.Services
             if (primeiroDigitoVerificador >= 10)
                 primeiroDigitoVerificador = 0;
 
-            // Valida o segundo dígito verificador
             soma = 0;
             for (int i = 0; i < 10; i++)
                 soma += int.Parse(cpf[i].ToString()) * (11 - i);
@@ -87,7 +82,6 @@ namespace Fonte.Services
             if (segundoDigitoVerificador >= 10)
                 segundoDigitoVerificador = 0;
 
-            // Verifica se os dígitos calculados são iguais aos fornecidos
             return cpf[9] == primeiroDigitoVerificador.ToString()[0] && cpf[10] == segundoDigitoVerificador.ToString()[0];
         }
 

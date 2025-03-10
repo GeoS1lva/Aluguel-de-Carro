@@ -45,8 +45,18 @@ namespace Fonte.Migrations
                     b.Property<int>("QuantidadeDias")
                         .HasColumnType("int");
 
+                    b.Property<double>("TaxaAtrasoDevolucao")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ValorPago")
+                        .HasColumnType("float");
+
                     b.Property<double>("ValorTotal")
                         .HasColumnType("float");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
