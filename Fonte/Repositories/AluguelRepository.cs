@@ -25,7 +25,7 @@ public sealed class AluguelRepository(SqlServerDbContext context) : IAluguelRepo
     {
         DateOnly DataAtual = DateOnly.FromDateTime(DateTime.Now);
 
-        return await _context.Alugueis.Where(x => x.DataDevolucao < DataAtual).ToListAsync();
+        return await _context.Alugueis.Where(x => x.DataDevolucao < DataAtual && x.status == EstadoAlguel.atrasado).ToListAsync();
     }
     public async Task<List<Aluguel>> VerificarAlugueisVencidos()
     {

@@ -3,14 +3,14 @@ using Fonte.Repositories;
 
 namespace Fonte.Services
 {
-    public class 
-        TarefaAtualizandoTaxaService(IUnitOfWork context) : ITarefaAtualizandoTaxaService
+    public class  TarefaAtualizandoTaxaService(IUnitOfWork context) : ITarefaAtualizandoTaxaService
     {
+        List<Aluguel> alugueisAtrasados = new List<Aluguel>();
         public async Task VerificarTaxadeAtraso()
         {
-            var alugueisVencidos = await context.AluguelRepository.VerificarAlugueisVencidos();
+            alugueisAtrasados = await context.AluguelRepository.VerificarAlugueisVencidos();
 
-            foreach (Aluguel l in alugueisVencidos)
+            foreach (Aluguel l in alugueisAtrasados)
             {
                 double taxa = ValidarTaxaPorAtraso(l.DataDevolucao, l.ValorTotal);
 

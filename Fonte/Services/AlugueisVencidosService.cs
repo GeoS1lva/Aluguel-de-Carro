@@ -8,6 +8,8 @@ namespace Fonte.Services
 {
     public class AlugueisVencidosService(IUnitOfWork context) : IAlugueisVencidosService
     {
+        List<Aluguel> alugueisVencidos = new List<Aluguel>();
+
         private const string
             SEM_ALUGUEIS_VENCIDOS = "Não foi encontrado Alugueis com atraso a data de Devolução!";
 
@@ -15,7 +17,7 @@ namespace Fonte.Services
 
         public async Task<ResultModel> RetornaAlugueisVencidos()
         {
-            var alugueisVencidos = await context.AluguelRepository.RetornarAlugueisVencidos();
+            alugueisVencidos = await context.AluguelRepository.RetornarAlugueisVencidos();
 
             if (alugueisVencidos is null)
                 return new(SEM_ALUGUEIS_VENCIDOS);
@@ -27,7 +29,7 @@ namespace Fonte.Services
 
         public async Task RetornarArquivoCSValugueisVencidos()
         {
-            var alugueisVencidos = await context.AluguelRepository.RetornarAlugueisVencidos();
+            alugueisVencidos = await context.AluguelRepository.RetornarAlugueisVencidos();
 
             string pastaDestino = @"C:\Users\Geovana\Documents\AlugueisEmAtrasoDeDevolucao.csv";
 
