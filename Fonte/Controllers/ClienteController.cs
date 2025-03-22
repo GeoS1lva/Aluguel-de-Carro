@@ -17,7 +17,7 @@ namespace Fonte.Controllers
             if (retorno.Error)
                 return BadRequest(retorno.ErrorMessage);
 
-            return Ok("Cliente cadastrado com sucesso!");
+            return Ok(retorno);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Fonte.Services
 
             await context.SaveChangesAsync();
 
-            RetornoCadastroClienteModel NovoClienteModel = new RetornoCadastroClienteModel(NovoCliente.Cpf);
+            ClienteModel NovoClienteModel = new ClienteModel(NovoCliente.Nome, NovoCliente.Cpf, NovoCliente.Email, NovoCliente.Cep);
 
             return new(NovoClienteModel);
 

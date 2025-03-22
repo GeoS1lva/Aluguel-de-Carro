@@ -10,7 +10,7 @@ public class AluguelController(IAluguelService aluguelService) : ControllerBase
 {
     [HttpPost]
     [Route("solicitar")]
-    public async Task<IActionResult> SolicitarAlguel([FromBody] SolicitacaoAluguelCarroModel request)
+    public async Task<IActionResult> SolicitarAluguel([FromBody] SolicitacaoAluguelCarroModel request)
     {
         var retorno = await aluguelService.AlugarCarroCliente(request);
 

@@ -7,7 +7,7 @@ namespace Fonte.Controllers
     [Route("api/[controller]")]
     public class TaxaSobreAtrasoDeAluguelController(ITarefaAtualizandoTaxaService tarefaTaxa) : ControllerBase
     {
-        [HttpGet]
+        [HttpPut]
         [Route("tarefaTaxaAtraso")]
         public async Task<IActionResult> AtualizarTaxaPorAtraso()
         {
